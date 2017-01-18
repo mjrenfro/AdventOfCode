@@ -5,7 +5,8 @@
 #ending coordinates of each 'walk'
 
 import re
-import copy
+from operator import itemgetter
+
 plan_input="L1, R3, R1, L5, L2, L5, R4, L2, R2, R2, L2, R1, L5, R3, L4, L1, L2, R3, R5, L2, R5, L1, R2, L5, R4, R2, R2, L1, L1, R1, L3, L1, R1, L3, R5, R3, R3, L4, R4, L2, L4, R1, R1, L193, R2, L1, R54, R1, L1, R71, L4, R3, R191, R3, R2, L4, R3, R2, L2, L4, L5, R4, R1, L2, L2, L3, L2, L1, R4, R1, R5, R3, L5, R3, R4, L2, R3, L1, L3, L3, L5, L1, L3, L3, L1, R3, L3, L2, R1, L3, L1, R5, R4, R3, R2, R3, L1, L2, R4, L3, R1, L1, L1, R5, R2, R4, R5, L1, L1, R1, L2, L4, R3, L1, L3, R5, R4, R3, R3, L2, R2, L1, R4, R2, L3, L4, L2, R2, R2, L4, R3, R5, L2, R2, R4, R5, L2, L3, L2, R5, L4, L2, R3, L5, R2, L1, R1, R3, R3, L5, L2, L2, R5"
 
 #Reorganizes the input
@@ -42,15 +43,10 @@ def findJunction(history):
     return [.1, .1]
 
 #Is it possible for two segments to intersect according to the given axis
-#Basically seg a has to between to
+#Basically seg a has to be between seg b on the axis
 def isAligned(seg_a, seg_b,axis):
-
-
-    if seg_a[0][axis]>seg_b[0][axis] and seg_a[0][axis]>seg_b[1][axis]:
-        return False
-    if seg_a[0][axis]<seg_b[0][axis] and seg_a[0][axis]<seg_b[1][axis]:
-        return False
-    return True
+    seg_b=sorted(seg_b, key=itemgetter(axis))
+    return seg_a[0][axis]>=seg_b[0][axis] and seg_a[0][axis]<=seg_b[1][axis]
 
 def updateLocation(location, distance, orient):
     x,y=location
@@ -64,6 +60,15 @@ def updateLocation(location, distance, orient):
         x-=distance
     return [x,y]
 
+def move(loc, dist, orient, dir):
+    orient=updateOrientation(dir, orient)
+    new_loc=updateLocation(loc, dist, orient)
+    axis=getAxis(loc, new_loc)
+
+    history.insert(0,([loc, new_loc],axis))
+    loc=new_loc
+
+
 def findDestination():
     bunny_plan=[]
 
@@ -75,17 +80,11 @@ def findDestination():
 
     for segment in bunny_plan:
         dir, dist=segment
-
-        #TODO: make less bad
-        orient=updateOrientation(dir, orient)
-        new_loc=updateLocation(loc, dist, orient)
-        axis=getAxis(loc, new_loc)
-        history.insert(0,([loc, new_loc],axis))
-        loc=new_loc
+        move(loc, dist, orient, dir)
 
         junct=findJunction(history)
         if junct!=[.1,.1]:
-            print (abs(junct[1])+abs(junct[0]))
+            print (sum(map(abs, junct))
             break
 
 if __name__ == "__main__":
