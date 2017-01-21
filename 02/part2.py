@@ -1,52 +1,23 @@
-import copy
+#heavily influenced by https://github.com/tomkooij/AdventOfCode/blob/master/aoc2016/day1.pyc
+#https://github.com/godarderik/adventofcode/blob/master/2016/problem2.py
+
 encoded_digits=[]
 decoded_digits=[]
-position=[0,0] #=5
+x,y=0,0 #=5
 
-keypad_coor=[(0,0), (1,-1), (1,0), (1,1), (2,-2), (2,-1), (2,0), (2,1), (2,2), (3,-1), (3,0), (3,1), (4,0)]
-keypad_val=['5', 'A', '6', '2', 'D', 'B', '7', '3', '1', 'C', '8', '4', '9']
+keypad_coor={(0,0):'5',(1,-1):'A',(1,0):'6',(1,1):'2',(2,-2):'D',(2,-1):'B',(2,0):'7',(2,1):'3',(2,2):'1', (3,-1):'C', (3,0):'8', (3,1):'4', (4,0):'9'}
 
+#just need a single map, no need to cross reference
+update_position={'U':lambda x,y: (x,y+1),
+                 'D':lambda x,y: (x,y-1),
+                 'R':lambda x,y: (x+1,y),
+                 'L':lambda x,y: (x-1,y)}
 
-def readInEncoding():
-    global encoded_digits
-    #read in file and put each line as an element in ED
-    with open("p2Input.txt") as f:
-        content=f.readlines()
-    encoded_digits = [x.strip() for x in content]
-
-#Try to step to the new grid cell if on keypad
-def decode(direction):
-    global position
-    new_pos=copy.copy(position)
-    step(direction, new_pos)
-    if tuple(new_pos) in keypad_coor:
-        position=new_pos
-
-#Update position one step in the given direction
-def step(direction, pos):
-    if direction=='U':
-        pos[1]+=1
-    elif direction=='L':
-        pos[0]-=1
-    elif direction=='R':
-        pos[0]+=1
-    elif direction=='D':
-        pos[1]-=1
-
-#Find the digit at the coordinate and add it to the password
-def updateDecodedDigits():
-    global decoded_digits
-    decoded_digits+=keypad_val[keypad_coor.index(tuple(position))]
-
-#Decode all lines in the file
-def processDecoding():
-    for line in encoded_digits:
-        for a in line:
-            decode(a)
-        updateDecodedDigits()
-
-
-if __name__ == "__main__":
-    readInEncoding()
-    processDecoding()
-    print (''.join(decoded_digits))
+with open('p2Input.txt') as f:
+    for line in f.readlines():
+        for dir in line.strip():
+            coord=update_position[dir](x,y)
+            if coord in keypad_coor:
+                x,y =coord
+        print(keypad_coor[(x,y)], end="")
+    print()
