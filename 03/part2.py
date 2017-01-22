@@ -8,7 +8,7 @@ def isValid(lengths):
     for pair in itertools.combinations(lengths, 2):
         if not all(i <sum(pair) for i in lengths):
             return
-    global numValid+=1
+    numValid+=1
 
 with open("p3input.txt") as f:
     while True:
