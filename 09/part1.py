@@ -1,4 +1,4 @@
-#A little messy non recursive solution
+#A messy non recursive solution
 import re
 
 count=0
