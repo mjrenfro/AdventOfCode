@@ -1,5 +1,5 @@
 #A little messy non recursive solution
-import regex as re
+import re
 
 count=0
 
