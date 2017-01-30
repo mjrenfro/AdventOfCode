@@ -1,12 +1,12 @@
 #Split into data assignment and instructions
 #Not memory efficient, but the input is so small that
 #loading all the text into lists shouldn't be an issue
+#not original
 from collections import defaultdict
 bots =defaultdict(list)
 output=defaultdict(list)
 target=[17,61]
 
-chip1, chip2 = 17, 61
 def process(line):
 
     type, *args= line.split()
