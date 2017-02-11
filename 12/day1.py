@@ -13,12 +13,10 @@ def process_line(idx):
             registers[args[0]]-=1
         elif cmd=="jnz":
             if (args[0]=='b'):
-                print(registers[args[0]])
             comp= int(args[0]) if args[0].isdigit() else registers[args[0]]
             if comp!=0:
                 offset=int(args[1])
         idx+=offset
-        print(registers)
 
 with open ('input.txt') as f:
     code=[l.rstrip('\n') for l in f.readlines()]
