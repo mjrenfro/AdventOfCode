@@ -8,10 +8,8 @@ goal=(31,39)
 def get_parity(n):
     c=0
     while n:
-
         c+=1
         n &= n-1
-
     return not bool(c%2)
 
 #Returns the manhattan distance between two points
@@ -21,23 +19,11 @@ def find_dist(point_a, point_b):
     return abs(a_x-b_x) + abs(a_y-b_y)
 
 def is_walkable(point):
-
     x,y=point
     if (x<0 or y<0):
         return False
-
     offset=x*x+3*x+2*x*y+y+y*y
-
-    f=get_parity(offset+key)
-    return f
-def print_layout():
-    for y in range(5):
-        for x in range(8):
-            if is_walkable((x,y)):
-                print('.', end='')
-            else:
-                print('#', end='')
-        print('')
+    return get_parity(offset+key)
 
 #totally could use NumPy for this, but it's only a small part of
 #solving the overall problem
@@ -48,7 +34,7 @@ def get_neighbors(point):
     for o in offsets:
         #here is where NumPy would make this look better
         neighbors.append(tuple(sum(x) for x in zip(point, o)))
-    print (neighbors)
+
     return neighbors
 
 def a_star():
