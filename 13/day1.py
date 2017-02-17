@@ -46,16 +46,12 @@ def a_star():
     cost_so_far[start] = 0
 
     while not frontier==[]:
-        print (cost_so_far)
         current=heapq.heappop(frontier)[1]
-        print (current)
-
+        
         if current==goal:
-            print ("Cost so far ", cost_so_far)
             return cost_so_far[current]
 
         for neig in [n for n in get_neighbors(current) if is_walkable(n)]:
-            print("neig: ", neig)
             new_cost=cost_so_far[current] + 1
             if neig not in cost_so_far or new_cost<cost_so_far[neig]:
                 cost_so_far[neig]=new_cost
