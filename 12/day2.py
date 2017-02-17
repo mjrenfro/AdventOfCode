@@ -14,7 +14,6 @@ def process_line(idx):
         elif cmd=="dec" :
             registers[args[0]]-=1
         elif cmd=="jnz":
-            if (args[0]=='b'):
             comp= int(args[0]) if args[0].isdigit() else registers[args[0]]
             if comp!=0:
                 offset=int(args[1])
