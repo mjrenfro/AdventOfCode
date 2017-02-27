@@ -50,28 +50,22 @@ def get_neighbors(point):
     # print (neighbors)
     return neighbors
 
-#for efficiently determining the path
-def a_star():
-    start=(1,1)
-    heapq.heappush(frontier, (0,(1,1)) )
-    came_from={}
-    cost_so_far={}
-    came_from[start] = None
-    cost_so_far[start] = 0
 
-    while not frontier==[]:
-        current=heapq.heappop(frontier)[1]
-
-        if current==goal:
-            return cost_so_far[current]
-
-        for neig in [n for n in get_neighbors(current) if is_walkable(n)]:
-            new_cost=cost_so_far[current] + 1
-            if neig not in cost_so_far or new_cost<cost_so_far[neig]:
-                cost_so_far[neig]=new_cost
-                priority=new_cost+find_dist(goal, neig)
-                heapq.heappush(frontier, (priority,neig) )
-                came_from[neig]=current
+#for determining the unique nodes at most 50 nodes away.
+#Python isn't the greatest for recursive; so using a queue
+#gonna steal this tuple, length idea from the amazing tomkooij :
+#https://github.com/tomkooij/AdventOfCode/blob/master/aoc2016/day13.py
+def breadth_first(path_head):
+    queue=[path_head]
+    while queue:
+        dist,node=queue.pop(0)
+        if node not in visited:
+            visited.add(node)
+            if dist ==50:
+                return
+            for neig in [n for n in get_neighbors(node) if is_walkable(n)]:
+                queue.append((dist+1, neig))
 
 
-print("Length: ",a_star())
+breadth_first((0,(1,1)))
+print("Num nodes < 50: ",len(visited))
