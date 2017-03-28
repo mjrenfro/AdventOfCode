@@ -38,7 +38,7 @@ def earliest_lineup(disc_details):
     return dropTime
 
 #read in input
-with open('input.txt') as f:
+with open('input2.txt') as f:
     unparsedDiscs=[l.rstrip('\n') for l in f.readlines()]
     soonestTime=earliest_lineup(parseDiscs(unparsedDiscs))
     print("Soonest Time: ",soonestTime)
