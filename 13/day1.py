@@ -51,9 +51,10 @@ def get_neighbors(point):
     return neighbors
 
 #for efficiently determining the path
+
 def a_star():
     start=(1,1)
-    heapq.heappush(frontier, (0,(1,1)) )
+    heapq.heappush(frontier, (0,start ))
     came_from={}
     cost_so_far={}
     came_from[start] = None
