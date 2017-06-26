@@ -2,8 +2,8 @@
 
 import sys
 import unittest
-#Using the rules described by the prompt for determining traps and safe tile
-#The total number of safe tiles up the to the 40th row must be determined
+#Using the rules described by the prompt for determining traps and safe tiles
+#The total number of safe tiles up to the 40th row must be determined
 
 #Thoughts: don't need to keep track
 #of all the rows.
