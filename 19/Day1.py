@@ -5,19 +5,19 @@ import unittest
 
 #Approach
 #This is fundamentally a simple case of the Josephus problem
-#Considering the simplest
-#Closed form expression for the "ideal" position is as follows
-#f(n) = 2(n-2^(log base 2 (n))) +1
-#Where n is the number of elements
 
-#There's also a nice algorithm based on the relationship between
-#bitwise shift of a binary representation of a number and
-#power of 2
+#In this case "k" (the count size) =2 and "n" is the puzzle input
+#Wikipedia has the closed form solution for this exact case.
+#The closed form expression for the "ideal" position is as follows:
+#      f(n) = 2(n-2^(log base 2 (n))) +1
 
-#translated pseudo-code from https://en.wikipedia.org/wiki/Josephus_problem
 
-#The remaining element can be calculated by performing
-#One left bitwise shift and add a 1 at the end (aka "or"ing with 1)
+#Another formula for this case:
+#     f(N)= 2L +1 where N=2^M +L and 0 <= L < 2^M
+#The formula can be calculated by removing the
+#highest bit of N and then "xor"ing with the smallest number 
+#that can be represented with the same num of bits as N
+
 def getSafePosition(num):
     l=num^(2**(num.bit_length()-1))
     return 2*l +1
