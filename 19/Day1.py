@@ -15,7 +15,7 @@ import unittest
 #Another formula for this case:
 #     f(N)= 2L +1 where N=2^M +L and 0 <= L < 2^M
 #The formula can be calculated by removing the
-#highest bit of N and then "xor"ing with the smallest number 
+#highest bit of N and then "xor"ing with the smallest number
 #that can be represented with the same num of bits as N
 
 def getSafePosition(num):
@@ -28,5 +28,4 @@ class TestDay1(unittest.TestCase):
 
 if __name__ == '__main__':
     #unittest.main()
-    tohveengl
     print("answer: ", getSafePosition(3004953))
