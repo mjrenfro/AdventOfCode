@@ -1,4 +1,4 @@
-#place to figure shit out
+#place to figure stuff out
 import time
 from collections import deque
 
