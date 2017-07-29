@@ -65,7 +65,7 @@ def solver(lines, password, scramble=True):
             if scramble: move(password, x,y)
             else: move(password, y,x)
 
-        #used mostly for debuging of instruction interpretation
+        #used mostly for debugging of instruction interpretation
         else:
             sys.exit("Unidentified instruction")
     return ''.join(password)
