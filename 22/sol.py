@@ -44,7 +44,7 @@ def GetData (fileName):
 
 def CountNumPairs(machines_info):
     pair_count=0
-    for machine_info in [i for i in list(itertools.product(machines_info,machines_info)) if not i[0] ==i[1]]:
+    for machine_info in list(itertools.permutations(machines_info,2)):
         machine_a, machine_b=machine_info[0], machine_info[1]
         if machine_a[2]-machine_b[1] >-1 and machine_b[1]>0:
             pair_count+=1
