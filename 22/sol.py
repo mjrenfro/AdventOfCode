@@ -14,7 +14,7 @@ So forth: n-2, n-3, n-4... sum = [n(n+1)]/2 = O(n^2)
 '''
 
 SMALL_INPUT_FILE='smallInput.txt'
-INPUT_FILE="input.txt"
+INPUT_FILE='input.txt'
 
 def GetCoordinates(uri):
     matches=re.match(r".+x(\d+)-y(\d+)",uri )
