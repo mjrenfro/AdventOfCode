@@ -14,7 +14,7 @@ So forth: n-2, n-3, n-4... sum = [n(n+1)]/2 = O(n^2)
 '''
 
 SMALL_INPUT_FILE='smallInput.txt'
-INPUT_FILE="input.txt"
+INPUT_FILE='input.txt'
 
 def GetCoordinates(uri):
     matches=re.match(r".+x(\d+)-y(\d+)",uri )
@@ -44,8 +44,8 @@ def GetData (fileName):
 
 def CountNumPairs(machines_info):
     pair_count=0
-    for machine_info in list(itertools.permutations(machines_info,2)):
-        machine_a, machine_b=machine_info[0], machine_info[1]
+    for machine_a, machine_b in list(itertools.permutations(machines_info,2)):
+
         if machine_a[2]-machine_b[1] >-1 and machine_b[1]>0:
             pair_count+=1
     return pair_count
