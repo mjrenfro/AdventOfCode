@@ -16,6 +16,8 @@ So forth: n-2, n-3, n-4... sum = [n(n+1)]/2 = O(n^2)
 
 SMALL_INPUT_FILE='smallInput.txt'
 INPUT_FILE='input.txt'
+SUPER_SMALL_INPUT_FILE='super_small_input.txt'
+TWO_BY_TWO_INPUT_FILE='input2by2.txt'
 
 def GetCoordinates(uri):
     matches=re.match(r".+x(\d+)-y(\d+)",uri )
@@ -29,7 +31,7 @@ def UnravelArray(array):
     linear_array=[]
     for c, row in enumerate(array):
         for r,element in enumerate(row):
-                linear_array.append([[r,c],element])
+                linear_array.append([[c,r],element])
 
     return linear_array
 
@@ -50,13 +52,13 @@ def GetData (fileName):
             if i>1:
 
                 machine_info=line.split()
-                unparsed_uri,unparsed_capacity, unparsed_used, unparsed_available=machine_info[0], machine_info[1], machine_info[2], machine_info[3]
+                unparsed_uri,unparsed_used, unparsed_available=machine_info[0], machine_info[2], machine_info[3]
 
                 #get the coordinates
                 coordinates=GetCoordinates(unparsed_uri)
 
                 #get the used, and available
-                capacity, used, available=GetNumericMemory(unparsed_capacity), GetNumericMemory(unparsed_used), GetNumericMemory(unparsed_available)
+                used, available=GetNumericMemory(unparsed_used), GetNumericMemory(unparsed_available)
 
                 #if part of the same row, then just add to the current row
                 if coordinates[0]==rowIndex:
@@ -66,7 +68,7 @@ def GetData (fileName):
                 else:
                     rowIndex+=1
                     network.append(row)
-                    row=[[capacity,used, available]]
+                    row=[[used, available]]
 
         #append the last row
         network.append(row)
@@ -80,7 +82,7 @@ def GetNextMoves(network):
     for a, b in list(permutations(UnravelArray(network),2)):
 
         if a[1][1]>=b[1][0] and b[1][0]>0:
-            NextMoves.append([a,b])
+            NextMoves.append([b,a])
     return NextMoves
 
 #input: list of possible nodes that can be swapped, and current network
@@ -90,13 +92,42 @@ def GetNextNetworks(next_moves, current_network):
     NextNetworks=[]
     for next_move in next_moves:
         next_network=deepcopy(current_network)
+        print("next_network",next_network)
+
+        #origin
         x0,y0 = next_move[0][0]
+
+        #destination
         x1,y1=next_move[1][0]
+
+        print("x0", x0)
+        print("y0", y0)
+        print("x1", x1)
+        print("y1", y1)
+
         #data swap of moves
-        temp_used=next_network[x0][y0][0]
-        next_network[x0][y0][0]=next_network[x1][y1][0]
-        next_network[x1][y1][0]=temp_used
+
+        #update used and available for origin
+        temp_used1=next_network[x0][y0][0]
+        next_network[x0][y0][0]=0
+        next_network[x0][y0][1]+=temp_used1
+
+        #update used and available for destination
+        next_network[x1][y1][0]+=temp_used1
+        next_network[x1][y1][1]-=temp_used1
         NextNetworks.append(next_network)
+
+        #IDK how else to account for this, but
+        #here's the case where the goal is the
+        #origin node
+
+        try:
+            if next_network[x0][y0][2]==True:
+                next_network[x0][y0].pop()
+                next_network[x1][y1].append(True)
+        except:
+            pass
+
     return NextNetworks
 
 
@@ -121,12 +152,13 @@ def GetFewestMoves(network):
         print("frontier:", frontier)
         for idx in range(len(frontier)):
             path=frontier.pop(idx)
-            current_network=path[0]
+            current_network=path[len(path)-1]
+            print("current_network: ", current_network)
 
             #Is this the ending case
             try:
                 if current_network[0][0][2]==True:
-                    return len(path)
+                    return len(path)-1
             except:
                 pass
 
@@ -136,18 +168,21 @@ def GetFewestMoves(network):
 
             #no backtracking
             for non_dup_network in [network for network in nextNetworks if network not in path]:
+                print("inside of for loop")
                 path_copy=deepcopy(path)
                 path_copy.append(non_dup_network)
                 frontier.append(path_copy)
 
 
 class TestSolution(unittest.TestCase):
-    def test_readin (self):
-        self.assertEqual(0,0)
-    def test_day1(self):
-        self.assertEqual(CountNumPairs(GetData(SMALL_INPUT_FILE)), 7)
-    def test_day2(self):
-        self.assertEqual(GetFewestMoves(GetData(SMALL_INPUT_FILE)),7)
+    # def test_readin (self):
+    #     self.assertEqual(0,0)
+    # def test_day1(self):
+    #     self.assertEqual(CountNumPairs(GetData(SMALL_INPUT_FILE)), 7)
+    # def test_day2_super_small(self):
+    #     self.assertEqual(GetFewestMoves(GetData(SUPER_SMALL_INPUT_FILE)),1)
+    def test_day2_small(self):
+        self.assertEqual(GetFewestMoves(GetData(TWO_BY_TWO_INPUT_FILE)),7)
 
 
 
