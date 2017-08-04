@@ -144,6 +144,8 @@ def ExploreFrontier(paths):
 # Input: The network's initial state represented by a list of lists
 # def Explore(network):
 
+#NOT WORKING
+#DOES NOT END EXECUTION WHEN INPUT IS BEYOND 2X2
 def GetFewestMoves(network):
     frontier=[[network]]
 
